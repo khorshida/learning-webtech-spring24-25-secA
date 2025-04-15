@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Basic Calculator</title>
+</head>
+<body>
+
+  
+  <div>
+    <input type="text" id="display" value="0" readonly>
+  </div>
+
+  
+  <div>
+    <button id="btnC">C</button>
+    <button id="btnPercent">%</button>
+    <button id="btnDivide">/</button>
+    <button id="btnMultiply">*</button>
+  </div>
+
+  <div>
+    <button id="btn7">7</button>
+    <button id="btn8">8</button>
+    <button id="btn9">9</button>
+    <button id="btnMinus">-</button>
+  </div>
+
+  <div>
+    <button id="btn4">4</button>
+    <button id="btn5">5</button>
+    <button id="btn6">6</button>
+    <button id="btnPlus">+</button>
+  </div>
+
+  <div>
+    <button id="btn1">1</button>
+    <button id="btn2">2</button>
+    <button id="btn3">3</button>
+    <button id="btnEquals">=</button>
+  </div>
+
+  <div>
+    <button id="btn0">0</button>
+    <button id="btnDot">.</button>
+  </div>
+
+  <script>
+    
+
+    const display = document.getElementById('display');
+
+
+    let firstNum = '';
+    let operator = '';
+    let secondNum = '';
+    let resultShown = false;
+
+    
+
+    function calculate(a, b, op) {
+      
+
+      a = parseFloat(a);
+      b = parseFloat(b);
+
+      if (op === '+') return a + b;
+      if (op === '-') return a - b;
+      if (op === '*') return a * b;
+      if (op === '/') return b !== 0 ? a / b : 'Error';
+      return 'Error';
+    }
+
+    
+
+    function handleInput(value) {
+      if (value === 'C') {
+        firstNum = '';
+        secondNum = '';
+        operator = '';
+        resultShown = false;
+        display.value = '0';
+        return;
+      }
+
+      if (value === '%') {
+        if (firstNum && !secondNum) {
+          firstNum = (parseFloat(firstNum) / 100).toString();
+          display.value = firstNum;
+        } else if (secondNum) {
+          secondNum = (parseFloat(secondNum) / 100).toString();
+          display.value = secondNum;
+        }
+        return;
+      }
+
+      if (value === '=') {
+        if (firstNum && operator && secondNum) {
+          const result = calculate(firstNum, secondNum, operator);
+          display.value = result;
+          firstNum = result.toString();
+          operator = '';
+          secondNum = '';
+          resultShown = true;
+        }
+        return;
+      }
+
+      if (['+', '-', '*', '/'].includes(value)) {
+        if (firstNum && secondNum && operator) {
+          firstNum = calculate(firstNum, secondNum, operator).toString();
+          secondNum = '';
+        }
+        operator = value;
+        resultShown = false;
+        return;
+      }
+
+      if (resultShown) {
+        firstNum = '';
+        secondNum = '';
+        operator = '';
+        resultShown = false;
+      }
+
+      if (!operator) {
+        firstNum += value;
+        display.value = firstNum;
+      } else {
+        secondNum += value;
+        display.value = secondNum;
+      }
+    }
+
+    
+    document.getElementById('btnC').addEventListener('click', () => handleInput('C'));
+    document.getElementById('btnPercent').addEventListener('click', () => handleInput('%'));
+    document.getElementById('btnDivide').addEventListener('click', () => handleInput('/'));
+    document.getElementById('btnMultiply').addEventListener('click', () => handleInput('*'));
+    document.getElementById('btn7').addEventListener('click', () => handleInput('7'));
+    document.getElementById('btn8').addEventListener('click', () => handleInput('8'));
+    document.getElementById('btn9').addEventListener('click', () => handleInput('9'));
+    document.getElementById('btnMinus').addEventListener('click', () => handleInput('-'));
+    document.getElementById('btn4').addEventListener('click', () => handleInput('4'));
+    document.getElementById('btn5').addEventListener('click', () => handleInput('5'));
+    document.getElementById('btn6').addEventListener('click', () => handleInput('6'));
+    document.getElementById('btnPlus').addEventListener('click', () => handleInput('+'));
+    document.getElementById('btn1').addEventListener('click', () => handleInput('1'));
+    document.getElementById('btn2').addEventListener('click', () => handleInput('2'));
+    document.getElementById('btn3').addEventListener('click', () => handleInput('3'));
+    document.getElementById('btnEquals').addEventListener('click', () => handleInput('='));
+    document.getElementById('btn0').addEventListener('click', () => handleInput('0'));
+    document.getElementById('btnDot').addEventListener('click', () => handleInput('.'));
+  </script>
+
+</body>
+</html>
